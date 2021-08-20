@@ -6,7 +6,7 @@ RUN set -x \
 
 RUN apk update \
     && apk upgrade \
-    && apk add py3-pip git curl vim wget zip autoconf make zsh
+    && apk add py3-pip git curl vim wget zip autoconf make zsh openssh
 
 RUN apk add \
     php7 \
