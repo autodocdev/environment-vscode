@@ -6,10 +6,12 @@ RUN set -x \
 
 RUN apk update \
     && apk upgrade \
-    && apk add py3-pip git curl vim wget zip autoconf make zsh openssh
+    && apk add py3-pip git curl vim wget zip autoconf make zsh openssh g++
 
 RUN apk add \
     php7 \
+    php7-dev \
+    php7-pear \
     php7-mysqlnd \
     php7-opcache \
     php7-tokenizer \
@@ -19,7 +21,11 @@ RUN apk add \
     php7-xml \
     composer
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+RUN pecl install xdebug
+
+ADD php.ini /etc/php7/php.ini
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer 
 
 RUN chown -R vscode.vscode /home/vscode
 
