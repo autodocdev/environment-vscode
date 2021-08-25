@@ -33,7 +33,7 @@ USER vscode
 
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-WORKDIR /home/vscode/app
+WORKDIR /home/vscode/environment-vscode
 
 CMD '/bin/zsh'
 
