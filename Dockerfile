@@ -1,5 +1,8 @@
 FROM alpine:3
 
+ENV PATH="/home/vscode/.local/bin:$PATH"
+ENV PYTHONIOENCODING=UTF-8
+
 RUN set -x \
     && addgroup -g 1000 vscode \
     && adduser -u 1000 -D -G vscode vscode
@@ -19,21 +22,21 @@ RUN apk add \
     php7-simplexml \
     php7-xmlwriter \
     php7-xml \
-    composer
-
-RUN pecl install xdebug
+    composer \
+    groff \
+    jq \
+    less \
+    && pecl install xdebug \
+    && chown -R vscode.vscode /home/vscode
 
 ADD php.ini /etc/php7/php.ini
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer 
-
-RUN chown -R vscode.vscode /home/vscode
-
 USER vscode
+
+RUN pip3 install --user awscli
 
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 WORKDIR /home/vscode/environment-vscode
 
 CMD '/bin/zsh'
-
