@@ -1,35 +1,8 @@
-FROM alpine:3
+FROM autodoc/environment-vscode:base
 
-ENV PATH="/home/vscode/.local/bin:$PATH"
-ENV PYTHONIOENCODING=UTF-8
-
-RUN set -x \
-    && addgroup -g 1000 vscode \
-    && adduser -u 1000 -D -G vscode vscode
-
-RUN apk update \
-    && apk upgrade \
-    && apk add \
-    py3-pip \
-    git \
-    curl \
-    vim \
-    wget \
-    zip \
-    autoconf \
-    make \
-    zsh \
-    openssh \
-    g++ \
-    argon2-libs \
-    libedit \
-    libxml2 \
-    musl \
-    pcre2 \
-    zlib
+USER root
 
 RUN apk add --update --no-cache \
-    ca-certificates \
     php8-bcmath \
     php8-bz2 \
     php8-calendar \
@@ -94,27 +67,15 @@ RUN apk add --update --no-cache \
     php8-xsl \
     php8-zip \
     php8-zlib \
-    php8-json \
-    groff \
-    jq \
-    less \
-    && chown -R vscode.vscode /home/vscode \
-    && ln -sf /usr/bin/php8 /usr/bin/php \
-    && pecl8 install xdebug
+    php8-json
 
-# RUN wget https://github.com/FriendsOfPHP/pickle/releases/latest/download/pickle.phar \
-#     && mv pickle.phar /usr/local/bin/pickle \
-#     && chmod +x /usr/local/bin/pickle \
-#     && pickle install xdebug
+RUN pecl8 install xdebug
+
+RUN ln -sf /usr/bin/php8 /usr/bin/php \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 ADD php.ini /etc/php7/php.ini
 
-# USER vscode
-
-RUN pip3 install --user awscli
-
-RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-WORKDIR /home/vscode/environment-vscode
+USER vscode
 
 CMD '/bin/zsh'
