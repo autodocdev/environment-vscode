@@ -74,7 +74,7 @@ RUN pecl8 install xdebug
 RUN ln -sf /usr/bin/php8 /usr/bin/php \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-ADD php.ini /etc/php7/php.ini
+ADD php.ini /etc/php8/php.ini
 
 USER vscode
 
